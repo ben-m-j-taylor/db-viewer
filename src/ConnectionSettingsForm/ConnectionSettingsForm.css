@@ -1,0 +1,7 @@
+.connection-settings-form {
+  border: red 1px solid;
+}
+
+.connection-settings-form.connected {
+  border: green 1px solid;
+}
