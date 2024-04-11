@@ -1,5 +1,6 @@
 type AddConnectionDataModel = {
-  connectionString: string;
+  host: string;
+  port: number;
   username: string;
   password: string;
 };

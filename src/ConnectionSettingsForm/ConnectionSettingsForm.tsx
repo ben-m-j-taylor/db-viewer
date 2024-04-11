@@ -13,15 +13,17 @@ export default function ConnectionSettingsForm({
   connected,
   onAddConnection,
 }: ConnectionSettingsFormProps) {
-  const [connectionString, setConnectionString] = useState<string>("");
-  const [username, setUsername] = useState<string>("");
-  const [password, setPassword] = useState<string>("");
+  const [host, setHost] = useState<string>("localhost");
+  const [port, setPort] = useState<number>(1433);
+  const [username, setUsername] = useState<string>("SA");
+  const [password, setPassword] = useState<string>("StrongPassword123");
 
   function handleOnSubmit(e: FormEvent<HTMLFormElement>) {
     e.preventDefault();
 
     onAddConnection({
-      connectionString,
+      host,
+      port,
       username,
       password,
     });
@@ -34,11 +36,19 @@ export default function ConnectionSettingsForm({
     >
       <input
         type="text"
-        name="connectionString"
-        id="connectionString"
-        placeholder="Connection string"
-        value={connectionString}
-        onChange={(e) => setConnectionString(e.target.value)}
+        name="host"
+        id="host"
+        placeholder="Host"
+        value={host}
+        onChange={(e) => setHost(e.target.value)}
+      />
+      <input
+        type="text"
+        name="port"
+        id="port"
+        placeholder="Port"
+        value={port}
+        onChange={(e) => setPort(parseInt(e.target.value))}
       />
       <input
         type="text"
