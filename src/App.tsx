@@ -1,41 +1,41 @@
-import { useCallback, useState } from "react";
-import { invoke } from "@tauri-apps/api/tauri";
+import { useCallback, useState } from 'react';
+import { invoke } from '@tauri-apps/api/tauri';
 
-import AddConnectionDataModel from "./types/AddConnectionDataModel";
+import AddConnectionDataModel from './types/AddConnectionDataModel';
 
-import MonacoEditor from "./MonacoEditor";
-import ConnectionSettingsForm from "./ConnectionSettingsForm";
-import ToolBar from "./ToolBar";
-import ResultsView from "./ResultsView";
-import QueryResults from "./types/QueryResult";
+import MonacoEditor from './MonacoEditor';
+import ConnectionSettingsForm from './ConnectionSettingsForm';
+import ToolBar from './ToolBar';
+import ResultsView from './ResultsView';
+import QueryResults from './types/QueryResult';
 
-import "./App.css";
+import './App.css';
 
 function App() {
   const [connected, setConnected] = useState(false);
-  const [queryContent, setQueryContent] = useState("");
+  const [queryContent, setQueryContent] = useState('');
   const [queryResults, setQueryResults] = useState<QueryResults>();
 
   async function handleOnAddConnection(
     data: AddConnectionDataModel
   ): Promise<void> {
-    const result = await invoke<boolean>("add_connection", {
+    const result = await invoke<boolean>('add_connection', {
       data,
     });
 
-    console.log("~> App -> handleOnAddConnection -> result:", result);
+    console.log('~> App -> handleOnAddConnection -> result:', result);
 
     setConnected(result);
   }
 
   async function handleOnRunQuery(): Promise<void> {
-    console.log("~> App -> handleOnRunQuery -> queryContent:", queryContent);
+    console.log('~> App -> handleOnRunQuery -> queryContent:', queryContent);
 
-    const result = await invoke<QueryResults>("run_query", {
+    const result = await invoke<QueryResults>('run_query', {
       query_string: queryContent,
     });
 
-    console.log("~> App -> handleOnRunQuery -> result:", result);
+    console.log('~> App -> handleOnRunQuery -> result:', result);
 
     setQueryResults(result);
   }

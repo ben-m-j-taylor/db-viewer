@@ -1,8 +1,8 @@
-import { useState, FormEvent } from "react";
+import { useState, FormEvent } from 'react';
 
-import AddConnectionDataModel from "../types/AddConnectionDataModel";
+import AddConnectionDataModel from '../types/AddConnectionDataModel';
 
-import "./ConnectionSettingsForm.css";
+import './ConnectionSettingsForm.css';
 
 type ConnectionSettingsFormProps = {
   connected: boolean;
@@ -13,10 +13,10 @@ export default function ConnectionSettingsForm({
   connected,
   onAddConnection,
 }: ConnectionSettingsFormProps) {
-  const [host, setHost] = useState<string>("localhost");
+  const [host, setHost] = useState<string>('localhost');
   const [port, setPort] = useState<number>(1433);
-  const [username, setUsername] = useState<string>("SA");
-  const [password, setPassword] = useState<string>("StrongPassword123");
+  const [username, setUsername] = useState<string>('SA');
+  const [password, setPassword] = useState<string>('StrongPassword123');
 
   function handleOnSubmit(e: FormEvent<HTMLFormElement>) {
     e.preventDefault();
@@ -31,7 +31,7 @@ export default function ConnectionSettingsForm({
 
   return (
     <form
-      className={`connection-settings-form${connected ? " connected" : ""}`}
+      className={`connection-settings-form${connected ? ' connected' : ''}`}
       onSubmit={handleOnSubmit}
     >
       <input

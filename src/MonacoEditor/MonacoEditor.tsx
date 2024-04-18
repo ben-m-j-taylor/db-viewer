@@ -7,13 +7,13 @@ import jsonWorker from 'monaco-editor/esm/vs/language/json/json.worker?worker';
 import './MonacoEditor.css';
 
 self.MonacoEnvironment = {
-    getWorker(_, label) {
-        if (label === 'json') {
-            return new jsonWorker();
-        }
-
-        return new editorWorker();
+  getWorker(_, label) {
+    if (label === 'json') {
+      return new jsonWorker();
     }
+
+    return new editorWorker();
+  },
 };
 
 const MONACO_EDITOR_CONTAINER_ID = 'monaco-editor-container';
@@ -21,50 +21,51 @@ const MONACO_EDITOR_CONTAINER_ID = 'monaco-editor-container';
 let created = false;
 
 type MonacoEditorProps = {
-    onChange: (value: string) => void;
+  onChange: (value: string) => void;
 };
 
-export default function MonacoEditor({ onChange }: MonacoEditorProps): JSX.Element {
-    const containerRef = useRef<HTMLDivElement>(null);
-    const editorRef = useRef<editor.IStandaloneCodeEditor | null>(null);
-    const changeEventListenerRef = useRef<IDisposable>();
-    const [isEditorReady, setIsEditorReady] = useState(false);
+export default function MonacoEditor({
+  onChange,
+}: MonacoEditorProps): JSX.Element {
+  const containerRef = useRef<HTMLDivElement>(null);
+  const editorRef = useRef<editor.IStandaloneCodeEditor | null>(null);
+  const changeEventListenerRef = useRef<IDisposable>();
+  const [isEditorReady, setIsEditorReady] = useState(false);
 
-    useEffect(() => {
-        if (containerRef.current === null || created) {
-            return
-        }
+  useEffect(() => {
+    if (containerRef.current === null || created) {
+      return;
+    }
 
-        created = true;
+    created = true;
 
-        editorRef.current = monaco.editor.create(containerRef.current, {
-            value: "SELECT * FROM Users;",
-            language: 'sql',
-            theme: 'vs-dark',
-            minimap: {
-                enabled: false,
-            },
+    editorRef.current = monaco.editor.create(containerRef.current, {
+      value: 'SELECT * FROM Users;',
+      language: 'sql',
+      theme: 'vs-dark',
+      minimap: {
+        enabled: false,
+      },
+    });
+
+    setIsEditorReady(true);
+  }, []);
+
+  // onDidChangeModelContent
+  useEffect(() => {
+    if (isEditorReady && onChange) {
+      changeEventListenerRef.current?.dispose();
+      changeEventListenerRef.current =
+        editorRef.current?.onDidChangeModelContent((event) => {
+          const value = editorRef.current!.getValue();
+
+          console.log('~> onDidChangeModelContent -> value:', value);
+          console.log('~> onDidChangeModelContent -> event:', event);
+
+          onChange(value);
         });
+    }
+  }, [isEditorReady, onChange]);
 
-        setIsEditorReady(true);
-    }, [containerRef.current]);
-
-    // onDidChangeModelContent
-    useEffect(() => {
-        if (isEditorReady && onChange) {
-            changeEventListenerRef.current?.dispose();
-            changeEventListenerRef.current = editorRef.current?.onDidChangeModelContent((event) => {
-                const value = editorRef.current!.getValue();
-
-                console.log('~> onDidChangeModelContent -> value:', value);
-                console.log('~> onDidChangeModelContent -> event:', event);
-
-                onChange(value);
-            });
-        }
-    }, [isEditorReady, onChange]);
-
-    return (
-        <div id={MONACO_EDITOR_CONTAINER_ID} ref={containerRef} />
-    );
+  return <div id={MONACO_EDITOR_CONTAINER_ID} ref={containerRef} />;
 }

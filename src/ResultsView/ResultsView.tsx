@@ -1,4 +1,4 @@
-import QueryResults from "../types/QueryResult";
+import QueryResults from '../types/QueryResult';
 
 type ResultsViewProps = {
   queryResults: QueryResults | undefined;
@@ -31,8 +31,8 @@ export default function ResultsView({ queryResults }: ResultsViewProps) {
       ) : null}
 
       <div className="results-view-stats-bar">
-        Time Elapsed:{" "}
-        {queryResults?.timeElapsed ? `${queryResults.timeElapsed}ms` : "-"}
+        Time Elapsed:{' '}
+        {queryResults?.timeElapsed ? `${queryResults.timeElapsed}ms` : '-'}
       </div>
     </div>
   );

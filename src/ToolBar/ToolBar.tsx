@@ -1,4 +1,4 @@
-import "./ToolBar.css";
+import './ToolBar.css';
 
 type ToolBarProps = {
   onRunQuery: () => void;

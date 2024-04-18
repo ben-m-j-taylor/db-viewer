@@ -1,9 +1,9 @@
 export type QueryResultRow = {
-  values: Array<String | null>;
+  values: Array<string | null>;
 };
 
 export type QueryResult = {
-  columns: String[];
+  columns: string[];
   rows: QueryResultRow[];
 };
 
