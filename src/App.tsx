@@ -1,6 +1,6 @@
 import { useCallback, useState } from 'react';
 import { invoke } from '@tauri-apps/api/tauri';
-import styled from "styled-components";
+import styled from 'styled-components';
 
 import AddConnectionDataModel from './types/AddConnectionDataModel';
 

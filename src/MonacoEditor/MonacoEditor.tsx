@@ -6,7 +6,7 @@ import editorWorker from 'monaco-editor/esm/vs/editor/editor.worker?worker';
 import jsonWorker from 'monaco-editor/esm/vs/language/json/json.worker?worker';
 
 const MonacoEditorContainer = styled.div`
-width: 100%;
+  width: 100%;
   height: 100%;
 `;
 
@@ -71,5 +71,7 @@ export default function MonacoEditor({
     }
   }, [isEditorReady, onChange]);
 
-  return <MonacoEditorContainer id={MONACO_EDITOR_CONTAINER_ID} ref={containerRef} />;
+  return (
+    <MonacoEditorContainer id={MONACO_EDITOR_CONTAINER_ID} ref={containerRef} />
+  );
 }

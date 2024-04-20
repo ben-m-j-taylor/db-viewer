@@ -1,10 +1,10 @@
-import styled from 'styled-components'
+import styled from 'styled-components';
 
 import QueryResults from '../types/QueryResult';
 
 const StyledResultsView = styled.div`
-width: 50%;
-height: 100%;
+  width: 50%;
+  height: 100%;
   border: grey 1px solid;
 `;
 

@@ -1,10 +1,10 @@
 import { useState, FormEvent } from 'react';
-import styled from 'styled-components'
+import styled from 'styled-components';
 
 import AddConnectionDataModel from '../types/AddConnectionDataModel';
 
-const Form = styled.form<{connected: boolean}>`
-  border: ${props => props.connected ? 'green' : 'red'} 1px solid;
+const Form = styled.form<{ connected: boolean }>`
+  border: ${(props) => (props.connected ? 'green' : 'red')} 1px solid;
 `;
 
 type ConnectionSettingsFormProps = {
@@ -33,10 +33,7 @@ export default function ConnectionSettingsForm({
   }
 
   return (
-    <Form
-      connected={connected}
-      onSubmit={handleOnSubmit}
-    >
+    <Form connected={connected} onSubmit={handleOnSubmit}>
       <input
         type="text"
         name="host"
