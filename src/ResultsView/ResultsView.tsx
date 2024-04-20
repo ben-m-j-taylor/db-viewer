@@ -1,4 +1,12 @@
+import styled from 'styled-components'
+
 import QueryResults from '../types/QueryResult';
+
+const StyledResultsView = styled.div`
+width: 50%;
+height: 100%;
+  border: grey 1px solid;
+`;
 
 type ResultsViewProps = {
   queryResults: QueryResults | undefined;
@@ -6,7 +14,7 @@ type ResultsViewProps = {
 
 export default function ResultsView({ queryResults }: ResultsViewProps) {
   return (
-    <div className="results-view grey-border">
+    <StyledResultsView>
       {queryResults ? (
         <div className="results-tables">
           {queryResults.results.map((result, i) => (
@@ -34,6 +42,6 @@ export default function ResultsView({ queryResults }: ResultsViewProps) {
         Time Elapsed:{' '}
         {queryResults?.timeElapsed ? `${queryResults.timeElapsed}ms` : '-'}
       </div>
-    </div>
+    </StyledResultsView>
   );
 }

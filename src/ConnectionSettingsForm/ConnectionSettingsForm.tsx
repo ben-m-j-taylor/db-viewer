@@ -1,8 +1,11 @@
 import { useState, FormEvent } from 'react';
+import styled from 'styled-components'
 
 import AddConnectionDataModel from '../types/AddConnectionDataModel';
 
-import './ConnectionSettingsForm.css';
+const Form = styled.form<{connected: boolean}>`
+  border: ${props => props.connected ? 'green' : 'red'} 1px solid;
+`;
 
 type ConnectionSettingsFormProps = {
   connected: boolean;
@@ -30,8 +33,8 @@ export default function ConnectionSettingsForm({
   }
 
   return (
-    <form
-      className={`connection-settings-form${connected ? ' connected' : ''}`}
+    <Form
+      connected={connected}
       onSubmit={handleOnSubmit}
     >
       <input
@@ -67,6 +70,6 @@ export default function ConnectionSettingsForm({
         onChange={(e) => setPassword(e.target.value)}
       />
       <button type="submit">Connect</button>
-    </form>
+    </Form>
   );
 }

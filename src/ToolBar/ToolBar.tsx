@@ -1,4 +1,9 @@
-import './ToolBar.css';
+import styled from 'styled-components'
+
+const StyledToolBar = styled.div`
+  width: 100%;
+  padding: 16px;
+`;
 
 type ToolBarProps = {
   onRunQuery: () => void;
@@ -6,8 +11,8 @@ type ToolBarProps = {
 
 export default function ToolBar({ onRunQuery }: ToolBarProps): JSX.Element {
   return (
-    <div className="toolbar">
+    <StyledToolBar>
       <button onClick={onRunQuery}>Run query</button>
-    </div>
+    </StyledToolBar>
   );
 }

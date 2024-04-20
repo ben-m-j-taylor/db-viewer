@@ -1,10 +1,14 @@
 import { useEffect, useRef, useState } from 'react';
+import styled from 'styled-components';
 import * as monaco from 'monaco-editor';
 import { type IDisposable, type editor } from 'monaco-editor';
 import editorWorker from 'monaco-editor/esm/vs/editor/editor.worker?worker';
 import jsonWorker from 'monaco-editor/esm/vs/language/json/json.worker?worker';
 
-import './MonacoEditor.css';
+const MonacoEditorContainer = styled.div`
+width: 100%;
+  height: 100%;
+`;
 
 self.MonacoEnvironment = {
   getWorker(_, label) {
@@ -67,5 +71,5 @@ export default function MonacoEditor({
     }
   }, [isEditorReady, onChange]);
 
-  return <div id={MONACO_EDITOR_CONTAINER_ID} ref={containerRef} />;
+  return <MonacoEditorContainer id={MONACO_EDITOR_CONTAINER_ID} ref={containerRef} />;
 }

@@ -1,5 +1,6 @@
 import { useCallback, useState } from 'react';
 import { invoke } from '@tauri-apps/api/tauri';
+import styled from "styled-components";
 
 import AddConnectionDataModel from './types/AddConnectionDataModel';
 
@@ -9,7 +10,29 @@ import ToolBar from './ToolBar';
 import ResultsView from './ResultsView';
 import QueryResults from './types/QueryResult';
 
-import './App.css';
+const Container = styled.div`
+  width: 100vw;
+  height: 100vh;
+`;
+
+const ConnectionSettings = styled.div`
+  width: 100%;
+  height: 30vh;
+  border: grey 1px solid;
+`;
+
+const EditorResultsSplitView = styled.div`
+  width: 100%;
+  height: 70vh;
+  display: flex;
+  flex-direction: row;
+`;
+
+const EditorView = styled.div`
+  width: 50%;
+  height: 100%;
+  border: grey 1px solid;
+`;
 
 function App() {
   const [connected, setConnected] = useState(false);
@@ -45,22 +68,22 @@ function App() {
   }, []);
 
   return (
-    <div className="container">
-      <div className="connection-settings grey-border">
+    <Container>
+      <ConnectionSettings>
         <ConnectionSettingsForm
           connected={connected}
           onAddConnection={handleOnAddConnection}
         />
-      </div>
+      </ConnectionSettings>
 
-      <div className="editor-results-split-view">
-        <div className="editor-view grey-border">
+      <EditorResultsSplitView>
+        <EditorView>
           <ToolBar onRunQuery={handleOnRunQuery} />
           <MonacoEditor onChange={handleOnChange} />
-        </div>
+        </EditorView>
         <ResultsView queryResults={queryResults} />
-      </div>
-    </div>
+      </EditorResultsSplitView>
+    </Container>
   );
 }
 
