@@ -3,17 +3,17 @@ import styled from 'styled-components';
 
 import AddConnectionDataModel from '../types/AddConnectionDataModel';
 
-const Form = styled.form<{ connected: boolean }>`
-  border: ${(props) => (props.connected ? 'green' : 'red')} 1px solid;
+const Form = styled.form`
+  width: 50%;
+  height: 100%;
+  padding: 2rem;
 `;
 
 type ConnectionSettingsFormProps = {
-  connected: boolean;
   onAddConnection: (data: AddConnectionDataModel) => void;
 };
 
 export default function ConnectionSettingsForm({
-  connected,
   onAddConnection,
 }: ConnectionSettingsFormProps) {
   const [host, setHost] = useState<string>('localhost');
@@ -33,7 +33,7 @@ export default function ConnectionSettingsForm({
   }
 
   return (
-    <Form connected={connected} onSubmit={handleOnSubmit}>
+    <Form onSubmit={handleOnSubmit}>
       <input
         type="text"
         name="host"

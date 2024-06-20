@@ -50,6 +50,7 @@ export default function MonacoEditor({
       minimap: {
         enabled: false,
       },
+      automaticLayout: true,
     });
 
     setIsEditorReady(true);

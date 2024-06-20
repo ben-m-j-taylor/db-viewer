@@ -20,9 +20,11 @@ export default function ResultsView({ queryResults }: ResultsViewProps) {
           {queryResults.results.map((result, i) => (
             <table key={i}>
               <thead>
-                {result.columns.map((column) => (
-                  <th key={`${i}-${column}`}>{column}</th>
-                ))}
+                <tr>
+                  {result.columns.map((column) => (
+                    <th key={`${i}-${column}`}>{column}</th>
+                  ))}
+                </tr>
               </thead>
               <tbody>
                 {result.rows.map((row, i2) => (
