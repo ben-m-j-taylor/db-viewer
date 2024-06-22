@@ -10,14 +10,14 @@ import ResultsView from './ResultsView';
 
 const EditorResultsSplitView = styled.div`
   width: 100%;
-  height: 70vh;
+  height: calc(100% - 24px);
   display: flex;
   flex-direction: row;
 `;
 
 const EditorView = styled.div`
   width: 50%;
-  height: 100%;
+  height: calc(100% - 75px);
   border: grey 1px solid;
 `;
 
