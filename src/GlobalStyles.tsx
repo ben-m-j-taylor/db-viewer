@@ -1,4 +1,5 @@
 import { createGlobalStyle } from 'styled-components';
+import { useColourHex } from './components/app/theming/utils';
 
 const GlobalStyles = createGlobalStyle`
   /* Box sizing reset */
@@ -31,8 +32,8 @@ const GlobalStyles = createGlobalStyle`
     line-height: 24px;
     font-weight: 400;
 
-    color: #0f0f0f;
-    background-color: #f6f6f6;
+    color: ${(props) => useColourHex(props, 'foreground')};
+    background-color: ${(props) => useColourHex(props, 'background')};
 
     font-synthesis: none;
     text-rendering: optimizeLegibility;
@@ -63,8 +64,8 @@ const GlobalStyles = createGlobalStyle`
     font-size: 1em;
     font-weight: 500;
     font-family: inherit;
-    color: #0f0f0f;
-    background-color: #ffffff;
+    color: ${(props) => useColourHex(props, 'foreground')};
+    background-color: ${(props) => useColourHex(props, 'inputBackground')};
     transition: border-color 0.25s;
     box-shadow: 0 2px 2px rgba(0, 0, 0, 0.2);
   }
@@ -74,11 +75,11 @@ const GlobalStyles = createGlobalStyle`
   }
 
   button:hover {
-    border-color: #396cd8;
+    border-color: ${(props) => useColourHex(props, 'focusBorder')};
   }
 
   button:active {
-    border-color: #396cd8;
+    border-color: ${(props) => useColourHex(props, 'focusBorder')};
     background-color: #e8e8e8;
   }
 
@@ -89,26 +90,6 @@ const GlobalStyles = createGlobalStyle`
 
   #greet-input {
     margin-right: 5px;
-  }
-
-  @media (prefers-color-scheme: dark) {
-    :root {
-        color: #f6f6f6;
-        background-color: #2f2f2f;
-    }
-
-    a:hover {
-        color: #24c8db;
-    }
-
-    input,
-    button {
-        color: #ffffff;
-        background-color: #0f0f0f98;
-    }
-    button:active {
-        background-color: #0f0f0f69;
-    }
   }
 `;
 

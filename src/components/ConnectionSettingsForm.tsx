@@ -2,11 +2,22 @@ import { useState, FormEvent } from 'react';
 import styled from 'styled-components';
 
 import AddConnectionDataModel from '../types/AddConnectionDataModel';
+import { useColourHex } from './app/theming/utils';
 
 const Form = styled.form`
   width: 50%;
   height: 100%;
   padding: 2rem;
+`;
+
+const Input = styled.input`
+  border: 1px solid ${(props) => useColourHex(props, 'border')};
+  background-color: ${(props) => useColourHex(props, 'inputBackground')};
+  transition: border-color 0.25s;
+
+  &:focus {
+    border-color: ${(props) => useColourHex(props, 'focusBorder')};
+  }
 `;
 
 type ConnectionSettingsFormProps = {
@@ -34,7 +45,7 @@ export default function ConnectionSettingsForm({
 
   return (
     <Form onSubmit={handleOnSubmit}>
-      <input
+      <Input
         type="text"
         name="host"
         id="host"
@@ -42,7 +53,7 @@ export default function ConnectionSettingsForm({
         value={host}
         onChange={(e) => setHost(e.target.value)}
       />
-      <input
+      <Input
         type="text"
         name="port"
         id="port"
@@ -50,7 +61,7 @@ export default function ConnectionSettingsForm({
         value={port}
         onChange={(e) => setPort(parseInt(e.target.value))}
       />
-      <input
+      <Input
         type="text"
         name="username"
         id="username"
@@ -58,7 +69,7 @@ export default function ConnectionSettingsForm({
         value={username}
         onChange={(e) => setUsername(e.target.value)}
       />
-      <input
+      <Input
         type="password"
         name="password"
         id="password"

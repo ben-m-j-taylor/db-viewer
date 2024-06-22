@@ -1,5 +1,5 @@
-import { useEffect, useRef, useState } from 'react';
-import styled from 'styled-components';
+import { useContext, useEffect, useRef, useState } from 'react';
+import styled, { ThemeContext } from 'styled-components';
 import * as monaco from 'monaco-editor';
 import { type IDisposable, type editor } from 'monaco-editor';
 import editorWorker from 'monaco-editor/esm/vs/editor/editor.worker?worker';
@@ -35,6 +35,7 @@ export default function MonacoEditor({
   const editorRef = useRef<editor.IStandaloneCodeEditor | null>(null);
   const changeEventListenerRef = useRef<IDisposable>();
   const [isEditorReady, setIsEditorReady] = useState(false);
+  const themeContext = useContext(ThemeContext);
 
   useEffect(() => {
     if (containerRef.current === null || created) {
@@ -44,9 +45,9 @@ export default function MonacoEditor({
     created = true;
 
     editorRef.current = monaco.editor.create(containerRef.current, {
-      value: 'SELECT * FROM Users;',
+      value: '',
       language: 'sql',
-      theme: 'vs-dark',
+      theme: themeContext?.dark ? 'vs-dark' : 'vs-light',
       minimap: {
         enabled: false,
       },
@@ -63,9 +64,6 @@ export default function MonacoEditor({
       changeEventListenerRef.current =
         editorRef.current?.onDidChangeModelContent((event) => {
           const value = editorRef.current!.getValue();
-
-          console.log('~> onDidChangeModelContent -> value:', value);
-          console.log('~> onDidChangeModelContent -> event:', event);
 
           onChange(value);
         });
