@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import styled from 'styled-components';
+import { useColourHex } from '../app/theming/utils';
 
 export type TabData = {
   title: string;
@@ -19,24 +20,57 @@ const TabsContainer = styled.div`
 
 const TabBar = styled.div`
   width: 100%;
-  height: 24px;
+  height: 2rem;
   display: flex;
   flex-direction: row;
-  border: 1px solid red;
+  justify-content: flex-start;
+  align-items: flex-end;
+  border-bottom: 1px solid ${(props) => useColourHex(props, 'border')};
+  transition: border-color 0.25s;
+
+  &.hasTabs {
+    border-color: ${(props) => useColourHex(props, 'focusBorder')};
+  }
 `;
 
 const TabSummary = styled.div`
-  padding: 4px;
+  padding: 0 4px;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  transition: border-color 0.25s;
+
+  &:first-child.selected {
+    border-top-left-radius: 0;
+  }
+
+  &.selected {
+    border-top-left-radius: 0.25rem;
+    border-top-right-radius: 0.25rem;
+    border-width: 1px 1px 0 1px;
+    border-style: solid;
+    border-color: ${(props) => useColourHex(props, 'focusBorder')};
+  }
 `;
 
 const AddTabIconButton = styled.button`
+  height: 1.5rem;
   display: flex;
   justify-content: center;
   align-items: center;
-  font-size: 16px;
+  font-size: 1rem;
   padding: 4px;
-  padding: 0;
-  margin: 4px 0 0 0;
+  border-radius: 0.25rem;
+  color: ${(props) => useColourHex(props, 'foreground')};
+  background-color: ${(props) => useColourHex(props, 'background')};
+
+  &:hover {
+    border-top-right-radius: 0.25rem;
+    border-width: 1px 1px 0 0;
+    border-style: solid;
+    border-color: ${(props) => useColourHex(props, 'focusBorder')};
+  }
 `;
 
 export default function Tabs({
@@ -48,9 +82,14 @@ export default function Tabs({
 
   return (
     <TabsContainer>
-      <TabBar>
+      <TabBar className={tabs.length > 0 ? 'hasTabs' : ''}>
         {tabs.map((tab, i) => (
-          <TabSummary onClick={() => setCurrentTab(i)}>{tab.title}</TabSummary>
+          <TabSummary
+            className={currentTab === i ? 'selected' : ''}
+            onClick={() => setCurrentTab(i)}
+          >
+            {tab.title}
+          </TabSummary>
         ))}
         <AddTabIconButton onClick={onAddTabClicked}>+</AddTabIconButton>
       </TabBar>
