@@ -20,17 +20,20 @@ export default function Connections() {
   async function handleOnAddConnection(
     data: AddConnectionDataModel
   ): Promise<void> {
-    const result = await invoke<boolean>('add_connection', {
+    const connectionId = await invoke<string | null>('add_connection', {
       data,
     });
 
-    console.log('~> Connections -> handleOnAddConnection -> result:', result);
+    if (!connectionId) {
+      return;
+    }
 
     setTabs([
       ...tabs,
       {
-        title: data.host,
-        content: <MSSQLTabContent />,
+        id: connectionId,
+        title: `${data.host}:${data.port}`,
+        content: <MSSQLTabContent connectionId={connectionId} />,
       },
     ]);
 

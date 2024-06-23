@@ -10,7 +10,7 @@ import ResultsView from './ResultsView';
 
 const EditorResultsSplitView = styled.div`
   width: 100%;
-  height: calc(100% - 24px);
+  height: 100%;
   display: flex;
   flex-direction: row;
 `;
@@ -21,21 +21,23 @@ const EditorView = styled.div`
   border: grey 1px solid;
 `;
 
-export default function MSSQLTabContent() {
+type MSSQLTabContentProps = {
+  connectionId: string;
+};
+
+export default function MSSQLTabContent({
+  connectionId,
+}: MSSQLTabContentProps) {
   const [queryContent, setQueryContent] = useState('');
   const [queryResults, setQueryResults] = useState<QueryResults>();
 
   async function handleOnRunQuery(): Promise<void> {
-    console.log(
-      '~> MSSQLTabContent -> handleOnRunQuery -> queryContent:',
-      queryContent
-    );
-
     const result = await invoke<QueryResults>('run_query', {
-      query_string: queryContent,
+      data: {
+        connection_id: connectionId,
+        query_string: queryContent,
+      },
     });
-
-    console.log('~> MSSQLTabContent -> handleOnRunQuery -> result:', result);
 
     setQueryResults(result);
   }
@@ -48,7 +50,7 @@ export default function MSSQLTabContent() {
     <EditorResultsSplitView>
       <EditorView>
         <ToolBar onRunQuery={handleOnRunQuery} />
-        <MonacoEditor onChange={handleOnChange} />
+        <MonacoEditor uniqueId={connectionId} onChange={handleOnChange} />
       </EditorView>
       <ResultsView queryResults={queryResults} />
     </EditorResultsSplitView>

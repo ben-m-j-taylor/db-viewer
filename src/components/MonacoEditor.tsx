@@ -20,15 +20,13 @@ self.MonacoEnvironment = {
   },
 };
 
-const MONACO_EDITOR_CONTAINER_ID = 'monaco-editor-container';
-
-let created = false;
-
 type MonacoEditorProps = {
+  uniqueId: string;
   onChange: (value: string) => void;
 };
 
 export default function MonacoEditor({
+  uniqueId,
   onChange,
 }: MonacoEditorProps): JSX.Element {
   const containerRef = useRef<HTMLDivElement>(null);
@@ -38,11 +36,9 @@ export default function MonacoEditor({
   const themeContext = useContext(ThemeContext);
 
   useEffect(() => {
-    if (containerRef.current === null || created) {
+    if (containerRef.current === null || editorRef.current) {
       return;
     }
-
-    created = true;
 
     editorRef.current = monaco.editor.create(containerRef.current, {
       value: '',
@@ -55,14 +51,13 @@ export default function MonacoEditor({
     });
 
     setIsEditorReady(true);
-  }, []);
+  }, [themeContext?.dark]);
 
-  // onDidChangeModelContent
   useEffect(() => {
     if (isEditorReady && onChange) {
       changeEventListenerRef.current?.dispose();
       changeEventListenerRef.current =
-        editorRef.current?.onDidChangeModelContent((event) => {
+        editorRef.current?.onDidChangeModelContent(() => {
           const value = editorRef.current!.getValue();
 
           onChange(value);
@@ -71,6 +66,9 @@ export default function MonacoEditor({
   }, [isEditorReady, onChange]);
 
   return (
-    <MonacoEditorContainer id={MONACO_EDITOR_CONTAINER_ID} ref={containerRef} />
+    <MonacoEditorContainer
+      id={`monaco-editor-container-${uniqueId}`}
+      ref={containerRef}
+    />
   );
 }

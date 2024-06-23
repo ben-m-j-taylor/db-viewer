@@ -3,6 +3,7 @@ import styled from 'styled-components';
 import { useColourHex } from '../app/theming/utils';
 
 export type TabData = {
+  id: string;
   title: string;
   content: JSX.Element;
 };
@@ -73,6 +74,16 @@ const AddTabIconButton = styled.button`
   }
 `;
 
+const TabContent = styled.div`
+  width: 100%;
+  height: calc(100% - 24px);
+  display: none;
+
+  &.visible {
+    display: initial;
+  }
+`;
+
 export default function Tabs({
   tabs,
   defaultComponent,
@@ -85,6 +96,7 @@ export default function Tabs({
       <TabBar className={tabs.length > 0 ? 'hasTabs' : ''}>
         {tabs.map((tab, i) => (
           <TabSummary
+            key={`summary-${tab.id}`}
             className={currentTab === i ? 'selected' : ''}
             onClick={() => setCurrentTab(i)}
           >
@@ -93,7 +105,17 @@ export default function Tabs({
         ))}
         <AddTabIconButton onClick={onAddTabClicked}>+</AddTabIconButton>
       </TabBar>
-      {tabs.length > 0 ? tabs[currentTab].content : defaultComponent}
+
+      {tabs.length === 0 ? defaultComponent : null}
+
+      {tabs.map((tab, i) => (
+        <TabContent
+          key={`content-${tab.id}`}
+          className={currentTab === i ? 'visible' : ''}
+        >
+          {tab.content}
+        </TabContent>
+      ))}
     </TabsContainer>
   );
 }

@@ -7,11 +7,17 @@ use serde::{Serialize, Deserialize};
 use tiberius::{AuthMethod, Client, ColumnType, Config, Query};
 use async_std::net::TcpStream;
 use anyhow::Result;
+use std::collections::HashMap;
 use std::time::SystemTime;
+use std::hash::{DefaultHasher, Hash, Hasher};
 
-#[derive(Default)]
-struct MSSQLClient(Mutex<Option<Client<TcpStream>>>);
+type WrappedState = Mutex<ApplicationState>;
 
+struct ApplicationState {
+    db_connections: HashMap::<String, Client<TcpStream>>
+}
+
+#[derive(Hash)]
 #[derive(Deserialize)]
 #[serde(rename_all = "camelCase")]
 struct AddConnectionDataModel {
@@ -23,7 +29,15 @@ struct AddConnectionDataModel {
 
 // Learn more about Tauri commands at https://tauri.app/v1/guides/features/command
 #[tauri::command(rename_all="snake_case")]
-async fn add_connection(data: AddConnectionDataModel, mssql_client: State<'_, MSSQLClient>) -> Result<bool, ()> {
+async fn add_connection(data: AddConnectionDataModel, state: State<'_, WrappedState>) -> Result<Option<String>, ()> {
+    let add_connection_data_model_hash = calculate_hash(&data).to_string();
+
+    let connection_already_in_state: bool = state.lock().await.db_connections.contains_key(&add_connection_data_model_hash);
+
+    if connection_already_in_state {
+        return Ok(None);
+    }
+
     let mut config = Config::new();
 
     config.host(data.host);
@@ -40,11 +54,15 @@ async fn add_connection(data: AddConnectionDataModel, mssql_client: State<'_, MS
 
     let client = Client::connect(config, tcp).await.unwrap();
 
-    let mut st = mssql_client.0.lock().await;
+    state.lock().await.db_connections.insert(add_connection_data_model_hash.clone(), client);
 
-    *st = Some(client);
+    Ok(Some(add_connection_data_model_hash))
+}
 
-    Ok(true)
+fn calculate_hash<T: Hash>(t: &T) -> u64 {
+    let mut s = DefaultHasher::new();
+    t.hash(&mut s);
+    s.finish()
 }
 
 #[derive(Serialize)]
@@ -67,17 +85,26 @@ struct QueryResultRow {
     values: Vec<Option<String>>,
 }
 
+#[derive(Deserialize)]
+#[serde(rename_all = "snake_case")]
+struct RunQueryDataModel {
+    connection_id: String,
+    query_string: String,
+}
+
 #[tauri::command(rename_all="snake_case")]
-async fn run_query(query_string: String, mssql_client: State<'_, MSSQLClient>) -> Result<QueryResults, ()> {
-    let mut s = mssql_client.0.lock().await;
+async fn run_query(data: RunQueryDataModel, state: State<'_, WrappedState>) -> Result<QueryResults, ()> {
+    let connection_id = data.connection_id;
 
-    let mut st = s.as_mut().expect("Could not get mut ref from MutexGuard");
+    let mut s = state.lock().await;
 
-    let select = Query::new(query_string);
+    let mut connection = s.db_connections.get_mut(&connection_id).expect("Could not get connection from state.");
+
+    let select = Query::new(data.query_string);
 
     let start_time = SystemTime::now();
 
-    let stream = select.query(&mut st).await.unwrap();
+    let stream = select.query(&mut connection).await.unwrap();
 
     let mut time_elapsed = 0;
 
@@ -333,7 +360,7 @@ async fn run_query(query_string: String, mssql_client: State<'_, MSSQLClient>) -
 
 fn main() {
     tauri::Builder::default()
-        .manage(MSSQLClient(Default::default()))
+        .manage(Mutex::new(ApplicationState { db_connections: HashMap::new() }))
         .invoke_handler(tauri::generate_handler![add_connection, run_query])
         .run(tauri::generate_context!())
         .expect("error while running tauri application");
