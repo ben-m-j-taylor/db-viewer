@@ -77,8 +77,8 @@ export default function RecentConnections() {
       <Heading>Recent Connections</Heading>
 
       <CardList>
-        {mockData.map((data) => (
-          <Card>{data.name}</Card>
+        {mockData.map((data, i) => (
+          <Card key={i}>{data.name}</Card>
         ))}
       </CardList>
     </Container>
