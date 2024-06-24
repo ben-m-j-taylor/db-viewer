@@ -17,7 +17,6 @@ struct ApplicationState {
     db_connections: HashMap::<String, Client<TcpStream>>
 }
 
-#[derive(Hash)]
 #[derive(Deserialize)]
 #[serde(rename_all = "camelCase")]
 struct AddConnectionDataModel {
@@ -25,6 +24,14 @@ struct AddConnectionDataModel {
     port: u16,
     username: String,
     password: String,
+}
+
+impl Hash for AddConnectionDataModel {
+    fn hash<H: Hasher>(&self, state: &mut H) {
+        self.host.hash(state);
+        self.port.hash(state);
+        self.username.hash(state);
+    }
 }
 
 // Learn more about Tauri commands at https://tauri.app/v1/guides/features/command
