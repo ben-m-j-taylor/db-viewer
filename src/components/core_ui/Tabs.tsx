@@ -26,51 +26,41 @@ const TabBar = styled.div`
   flex-direction: row;
   justify-content: flex-start;
   align-items: flex-end;
+  background-color: ${(props) => useColourHex(props, 'background2')};
   border-bottom: 1px solid ${(props) => useColourHex(props, 'border')};
   transition: border-color 0.25s;
-
-  &.hasTabs {
-    border-color: ${(props) => useColourHex(props, 'focusBorder')};
-  }
 `;
 
 const TabSummary = styled.div`
-  padding: 0 4px;
+  height: 100%;
+  padding: 0 8px;
   display: flex;
   flex-direction: row;
   justify-content: center;
   align-items: center;
-  transition: border-color 0.25s;
-
-  &:first-child.selected {
-    border-top-left-radius: 0;
-  }
+  cursor: pointer;
+  transition: background-color 0.25s;
 
   &.selected {
-    border-top-left-radius: 0.25rem;
-    border-top-right-radius: 0.25rem;
-    border-width: 1px 1px 0 1px;
-    border-style: solid;
-    border-color: ${(props) => useColourHex(props, 'focusBorder')};
+    background-color: ${(props) => useColourHex(props, 'background')};
   }
 `;
 
 const AddTabIconButton = styled.button`
-  height: 1.5rem;
+  height: 100%;
+  aspect-ratio: 1/1;
   display: flex;
   justify-content: center;
   align-items: center;
   font-size: 1rem;
-  padding: 4px;
-  border-radius: 0.25rem;
+  border: none;
+  cursor: pointer;
   color: ${(props) => useColourHex(props, 'foreground')};
-  background-color: ${(props) => useColourHex(props, 'background')};
+  background-color: ${(props) => useColourHex(props, 'background2')};
+  transition: background-color 0.25s;
 
   &:hover {
-    border-top-right-radius: 0.25rem;
-    border-width: 1px 1px 0 0;
-    border-style: solid;
-    border-color: ${(props) => useColourHex(props, 'focusBorder')};
+    background-color: ${(props) => useColourHex(props, 'background')};
   }
 `;
 
@@ -93,7 +83,7 @@ export default function Tabs({
 
   return (
     <TabsContainer>
-      <TabBar className={tabs.length > 0 ? 'hasTabs' : ''}>
+      <TabBar>
         {tabs.map((tab, i) => (
           <TabSummary
             key={`summary-${tab.id}`}
