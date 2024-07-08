@@ -42,7 +42,7 @@ const GlobalStyles = createGlobalStyle`
     -webkit-text-size-adjust: 100%;
   }
 
-  a {
+  /* a {
     font-weight: 500;
     color: #646cff;
     text-decoration: inherit;
@@ -86,11 +86,7 @@ const GlobalStyles = createGlobalStyle`
   input,
   button {
     outline: none;
-  }
-
-  #greet-input {
-    margin-right: 5px;
-  }
+  } */
 `;
 
 export default GlobalStyles;
