@@ -143,6 +143,7 @@ const theme: Theme = {
     border: 'surface2',
     focusBorder: 'mauve',
     inputBackground: 'surface0',
+    background2: 'crust',
   },
 };
 

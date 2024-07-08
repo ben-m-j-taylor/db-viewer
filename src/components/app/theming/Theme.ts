@@ -11,6 +11,7 @@ export type UIColors = {
   border: string;
   focusBorder: string;
   inputBackground: string;
+  background2: string;
 };
 
 type Theme = {
