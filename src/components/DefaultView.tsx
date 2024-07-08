@@ -1,5 +1,7 @@
 import styled from 'styled-components';
 
+import ColorGrid from './ColorGrid';
+
 const Container = styled.div`
   width: 100%;
   height: calc(100% - 24px);
@@ -22,6 +24,8 @@ export default function DefaultView() {
     <Container>
       <ActionList>
         <Action>Create new connection</Action>
+
+        <ColorGrid />
       </ActionList>
     </Container>
   );
